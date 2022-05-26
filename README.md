@@ -1,7 +1,4 @@
-# FavCat Debug Test
-嘗試反編譯FavCat的筆記
-
-已經反編譯成功
+# 反編譯FavCat
 
 ## 修改部分:
 
