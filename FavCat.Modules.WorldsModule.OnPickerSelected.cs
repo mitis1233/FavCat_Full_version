@@ -45,15 +45,13 @@ namespace FavCat.Modules
                 if (c.Code == 404 && listsParent.gameObject.activeInHierarchy)
                 {
                     var menu = ExpansionKitApi.CreateCustomFullMenuPopup(LayoutDescription.WideSlimList);
-					menu.AddSpacer();
-					menu.AddSpacer();
-					menu.AddLabel("This world is not available anymore (deleted)");
-					menu.AddLabel("It has been removed from all favorite lists");
-					menu.AddSpacer();
-					menu.AddSpacer();
-					menu.AddSimpleButton("Delete from favorites & close", () => { FavCatMod.Database.CompletelyDeleteWorld(picker.Id); menu.Hide(); });
-					menu.AddSimpleButton("Close", menu.Hide);
-					menu.Show();
+                    menu.AddSpacer();
+                    menu.AddLabel("This world is not available anymore (deleted)");
+                    menu.AddLabel("It has been removed from all favorite lists");
+                    menu.AddSpacer();
+                    menu.AddSimpleButton("Delete from favorites & close", () => { FavCatMod.Database.CompletelyDeleteWorld(picker.Id); menu.Hide(); });
+                    menu.AddSimpleButton("Close", menu.Hide);
+                    menu.Show();
                 }
             }));
         }
