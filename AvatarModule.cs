@@ -152,9 +152,9 @@ namespace FavCat.Modules
                     menu.AddLabel("This avatar is not available anymore (deleted or privated)");
                     menu.AddLabel("It has been removed from all favorite lists");
                     menu.AddSpacer();
-					menu.AddSimpleButton("Delete from favorites & close", () => { FavCatMod.Database.CompletelyDeleteAvatar(model.Id); menu.Hide(); });
-					menu.AddSimpleButton("Close", menu.Hide);
-					menu.Show();
+                    menu.AddSimpleButton("Delete from favorites & close", () => { FavCatMod.Database.CompletelyDeleteAvatar(model.Id); menu.Hide(); });
+                    menu.AddSimpleButton("Close", menu.Hide);
+                    menu.Show();
                 }
             }));
         }
