@@ -1,3 +1,7 @@
+[![GitHub all releases](https://img.shields.io/github/downloads/mitis1233/FavCat_Full_version/total?color=%23eab0e3&style=flat-square)](https://github.com/mitis1233/FavCat_Full_version/releases)
+[![GitHub stars](https://img.shields.io/github/stars/mitis1233/FavCat_Full_version?color=%23ffcd3c&style=flat-square)](https://github.com/mitis1233/FavCat_Full_version/stargazers)
+
+
 # 反編譯FavCat
 
 ## 修改部分:
