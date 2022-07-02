@@ -10,6 +10,8 @@ Avatar收藏
 
 Avatar紀錄
 
+Avatar導入 (將txt放在VRChat\UserData\FavCatImport)
+
 刪除只記錄allow avatar cloning的規則(優化)
 
 無效avatar & world會有按鈕去選擇是否刪除
