@@ -85,7 +85,7 @@ namespace FavCat
             var fileName = Path.GetFileName(filePath);
             MelonLogger.Msg($"Started avatar import process for file {fileName}");
             
-			var toAddAvatar = new List<string>();
+            var toAddAvatar = new List<string>();
             var toAddUsers = new List<string>();
             var toAddWorlds = new List<string>();
             { // file access block
@@ -95,14 +95,14 @@ namespace FavCat
                 
                 while ((line = await reader.ReadLineAsync().ConfigureAwait(false)) != null)
                 {
-					foreach (Match match in ourAvatarIdRegex.Matches(line)) toAddAvatar.Add(match.Value);
+                    foreach (Match match in ourAvatarIdRegex.Matches(line)) toAddAvatar.Add(match.Value);
                     foreach (Match match in ourUserIdRegex.Matches(line)) toAddUsers.Add(match.Value);
                     foreach (Match match in ourWorldIdRegex.Matches(line)) toAddWorlds.Add(match.Value);
                 }
             }
 
 
-			for (var i = 0; i < toAddAvatar.Count; i++)
+            for (var i = 0; i < toAddAvatar.Count; i++)
             {
                 ImportStatusInner = $"Fetching AddAvatar {i + 1}/{toAddAvatar.Count}";
                 var avatarId = toAddAvatar[i];
@@ -110,7 +110,7 @@ namespace FavCat
                 {
                     await TaskUtilities.YieldToMainThread();
                     new ApiAvatar {id = avatarId}.Fetch(); // it will get intercepted and stored
-                    await Task.Delay(TimeSpan.FromSeconds(Random.Range(0.0f, 5.0f))).ConfigureAwait(false);
+                    await Task.Delay(TimeSpan.FromSeconds(Random.Range(0.1f, 5.0f))).ConfigureAwait(false);
 					
                 }
             }
@@ -144,28 +144,32 @@ namespace FavCat
             await TaskUtilities.YieldToMainThread();
             var categoryName = $"Imported from {fileName}";
 
-			var existingCategoryAvatar = FavCatMod.Database.AvatarFavorites.GetCategory(categoryName); //Load Fav Avatar
-            foreach (var avatarId in toAddAvatar)
-            {
-                if (FavCatMod.Database.AvatarFavorites.IsFavorite(avatarId, categoryName))
-                    continue;
-                
-                var storedAvatar = FavCatMod.Database.myStoredAvatars.FindById(avatarId);
-                if (storedAvatar == null )
-                    continue;
-                
-                FavCatMod.Database.AvatarFavorites.AddFavorite(avatarId, categoryName);
-            }
-            
-            if (existingCategoryAvatar == null)
-            {
-                existingCategoryAvatar = new StoredCategory {CategoryName = categoryName, SortType = "!added"};
-                FavCatMod.Database.AvatarFavorites.UpdateCategory(existingCategoryAvatar);
+            //Import Avatar favorites list
+            if (toAddUsers.Count > 1)
+	    {
+		    var existingCategoryAvatar = FavCatMod.Database.AvatarFavorites.GetCategory(categoryName);
+		    foreach (var avatarId in toAddAvatar)
+		    {
+			if (FavCatMod.Database.AvatarFavorites.IsFavorite(avatarId, categoryName))
+			    continue;
 
-                var avatarModule = FavCatMod.Instance.AvatarModule;
-                avatarModule.CreateList(existingCategoryAvatar);
-                avatarModule.ReorderLists();
-            }//Load Fav Avatar
+			var storedAvatar = FavCatMod.Database.myStoredAvatars.FindById(avatarId);
+			if (storedAvatar == null )
+			    continue;
+
+			FavCatMod.Database.AvatarFavorites.AddFavorite(avatarId, categoryName);
+		    }
+
+		    if (existingCategoryAvatar == null)
+		    {
+			existingCategoryAvatar = new StoredCategory {CategoryName = categoryName, SortType = "!added"};
+			FavCatMod.Database.AvatarFavorites.UpdateCategory(existingCategoryAvatar);
+
+			var avatarModule = FavCatMod.Instance.AvatarModule;
+			avatarModule.CreateList(existingCategoryAvatar);
+			avatarModule.ReorderLists();
+		    }
+	    }
 
             void DoAddCategories<T>(List<string> ids, DatabaseFavoriteHandler<T> favs, ExtendedFavoritesModuleBase<T> module, ILiteCollection<T> rawStore) where T: class, INamedStoredObject
             {
@@ -199,7 +203,7 @@ namespace FavCat
             DoAddCategories(toAddUsers, database.PlayerFavorites, FavCatMod.Instance.PlayerModule, database.myStoredPlayers);
             
             MelonLogger.Msg($"Done importing {fileName}");
-            File.Delete(filePath);
+            //File.Delete(filePath);
         }
         
         internal static Task MergeInForeignStore(string foreignStorePath)
