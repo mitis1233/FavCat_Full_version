@@ -145,7 +145,7 @@ namespace FavCat
             var categoryName = $"Imported from {fileName}";
 
             //Import Avatar favorites list
-            if (toAddUsers.Count > 1)
+            if (toAddAvatar.Count > 0)
 	    {
 		    var existingCategoryAvatar = FavCatMod.Database.AvatarFavorites.GetCategory(categoryName);
 		    foreach (var avatarId in toAddAvatar)
